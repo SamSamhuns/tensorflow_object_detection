@@ -1,0 +1,10 @@
+batch_size: 32
+fine_tune_checkpoint: ./model_store/mobilenet_v2/mobilenet_v2.ckpt-1
+labelmap_path: ./data/coco_person/labelmap.pbtxt
+model_dir: ./training
+num_classes: 1
+num_eval_steps: 1000
+num_steps: 7500
+pipeline_config_path: ./model_store/mobilenet_v2.config
+test_record_path: ./data/coco_person/test.record
+train_record_path: ./data/coco_person/train.record

@@ -150,5 +150,7 @@ protobuf
 # tf2 object detection git repository
 models
 
+# training based files
 # tf2 model checkpoint default directory
 training
+*.record

@@ -91,4 +91,6 @@ with open(pipeline_config_path, 'w') as f:
     f.write(config)
 
 print(
-    f"Completed changing configurations to new parameters in {pipeline_config_path}")
+    f"Completed changing configurations in the config to new parameters in {pipeline_config_path}")
+print(
+    f"Train configuration YAML file is saved in {model_training_config_path}")

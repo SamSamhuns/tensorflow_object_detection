@@ -2,6 +2,16 @@
 
 Important: Use a virtual env with **python 3.6**
 
+## Contents
+
+-  [1. Repository Setup](1.-repository-setup)
+-  [2. Data Setup](2.-data-setup)
+-  [3. Model Setup](3.-model-setup)
+-  [4. Model Training](4.-model-training)
+-  [5. Mpdel Validation and Testing](5.-model-validation-and-testing)
+-  [6. Model Export](6.-model-export)
+-  [7. Model Inference](7.-model-inference)
+
 ## 1. Repository Setup
 
 ```bash
@@ -42,10 +52,10 @@ $ python3 object_detection/builders/model_builder_tf2_test.py
 
 ### b. Convert dataset to tfrecords:
 
-Example on the `coco_person` dataset. This dataset was created using `tf_odet/data/voc_to_label_csv.py` from the original coco dataset filtered for only the `person` class.
+Example on the `coco_person` dataset. This mini-dataset was created using `tf_odet/data/voc_to_label_csv.py` from the original coco dataset filtered for only the `person` class.
 
 ```bash
-$ export dataset=coco_person
+$ export dataset=data/coco_person
 $ python3 tf_odet/data/generate_tf_records.py -l $dataset/labelmap.pbtxt -o $dataset/train.record -i $dataset/images -csv $dataset/train_labels.csv
 $ python3 tf_odet/data/generate_tf_records.py -l $dataset/labelmap.pbtxt -o $dataset/test.record -i $dataset/images -csv $dataset/test_labels.csv
 ```
@@ -98,6 +108,8 @@ pipeline_config_path = osp.join(MSTORE_PATH, "mobilenet_v2.config")
 fine_tune_checkpoint = osp.join(MSTORE_PATH, "mobilenet_v2/mobilenet_v2.ckpt-1")
 ```
 
+Note: Other training parameters like the learning rate, lr optimizer, etc can be modified in the respective `.config` file. For the  default `coco_person` dataset training with `mobilenet_v2`, this config file is `model_store/mobilenet_v2.config`
+
 Run the training param yaml config generator:
 
 ```bash
@@ -136,6 +148,12 @@ $ tensorboard --logdir=TRAINING_DIR --port=HTTP_PORT
 #   YAML_CONFIG_FILE = model_store/mobilenet_v2_train.yaml
 #   EXPORT_OUTPUT_DIR=inference_graph
 $ python3 tf_odet/export.py -c YAML_CONFIG_FILE -o EXPORT_OUTPUT_DIR
+```
+
+## 7. Model Inference
+
+```bash
+$ python3 tf_odet/inference/inference.py
 ```
 
 ### Acknowledgements
