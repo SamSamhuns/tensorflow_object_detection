@@ -7,8 +7,8 @@ import os.path as osp
 # ###################################
 
 num_classes = 1
-batch_size = 32
-num_steps = 7500
+batch_size = 64
+num_steps = 10000
 num_eval_steps = 1000
 
 # having the leading './' is important
@@ -69,11 +69,11 @@ with open(pipeline_config_path, 'w') as f:
                     'fine_tune_checkpoint: "{}"'.format(fine_tune_checkpoint), config)
 
     # Set train tf-record file path
-    config = re.sub('(input_path: ".*?)(PATH_TO_BE_CONFIGURED/train)(.*?")',
+    config = re.sub('(input_path: ".*?)(train)(.*?")',
                     'input_path: "{}"'.format(train_record_path), config)
 
     # Set test tf-record file path
-    config = re.sub('(input_path: ".*?)(PATH_TO_BE_CONFIGURED/val)(.*?")',
+    config = re.sub('(input_path: ".*?)(val|test|eval)(.*?")',
                     'input_path: "{}"'.format(test_record_path), config)
 
     # Set number of classes.

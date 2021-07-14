@@ -3,15 +3,14 @@ Reference repo:
     https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10/blob/master/generate_tfrecord.py
 Install the tensorflow object detection first
 '''
-
 from collections import namedtuple
 import argparse
 import logging
 import io
 import os
 
-import pandas as pd
 from PIL import Image
+import pandas as pd
 import tensorflow as tf
 from object_detection.utils import dataset_util as dutil
 

@@ -141,9 +141,6 @@ cython_debug/
 # log file
 logs/
 
-# checkpoints file
-checkpoints/
-
 # protobuf git repository
 protobuf
 
@@ -152,5 +149,10 @@ models
 
 # training based files
 # tf2 model checkpoint default directory
-training
+checkpoints/
+training/
+inference_graph/
 *.record
+
+# detection results
+detection_result/

@@ -1,3 +1,5 @@
+# must be imported at the top for setting env vars
+import tf_odet.set_tf_env_vars
 import os
 import yaml
 import argparse
@@ -12,19 +14,7 @@ from object_detection.utils import ops as utils_ops
 from object_detection.utils import label_map_util
 from object_detection.utils import visualization_utils as vis_util
 
-# os environments must be set at th beginning of the file top use GPU
-os.environ["XLA_FLAGS"] = "--xla_gpu_cuda_data_dir=/usr/local/cuda"
-os.environ["TF_XLA_FLAGS"] = "--tf_xla_enable_xla_devices --tf_xla_auto_jit=2 --tf_xla_cpu_global_jit"
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-os.environ["OMP_NUM_THREADS"] = "15"
-os.environ["KMP_BLOCKTIME"] = "0"
-os.environ["KMP_SETTINGS"] = "1"
-os.environ["KMP_AFFINITY"] = "granularity=fine,verbose,compact,1,0"
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "3"  # 0, 1, 2, 3, 4, 5, 6, 7
-# import tf after setting ENV vars
 import tensorflow as tf
-
 
 # limit gpu memory growth to required amount only
 gpus = tf.config.experimental.list_physical_devices('GPU')
@@ -51,6 +41,14 @@ def parse_args():
                         "--inference_output_directory",
                         default="detection_result",
                         help="Def: detection_result. Dir where images with detections drawn will be saved to")
+    parser.add_argument("-tcsv",
+                        "--test_csv_label_path",
+                        default="data/coco_person/test_labels.csv",
+                        help="Def: data/coco_person/test_labels.csv. Path to test csv label file")
+    parser.add_argument("-i",
+                        "--images_dir",
+                        default="data/coco_person/images",
+                        help="Def: data/coco_person/images. Path to images directory")
     args = parser.parse_args()
 
     return args
@@ -109,7 +107,8 @@ def load_model_and_cat_idx(labelmap_path, saved_model_output_dir="inference_grap
     return model, category_index
 
 
-def inference_on_images(model, category_index, test_csv_label, images_dir):
+def inference_on_images(model, category_index, test_csv_label, images_dir, output_dir):
+    os.makedirs(output_dir, exist_ok=True)
     test = pd.read_csv(test_csv_label)
     #  getting 3 random images to test
     images = list(test.sample(n=3)['filename'])
@@ -128,12 +127,11 @@ def inference_on_images(model, category_index, test_csv_label, images_dir):
                 'detection_masks_reframed', None),
             use_normalized_coordinates=True,
             line_thickness=8)
-        Image.fromarray(image_np).save(f"{image_name}")
+        Image.fromarray(image_np).save(f"{osp.join(output_dir, image_name)}")
 
 
 def main():
     args = parse_args()
-    print(f"Inferenced images will be saved in {args.inference_output_directory}")
 
     # load config files for training
     with open(args.model_config_yaml) as file:
@@ -143,8 +141,12 @@ def main():
                                                    saved_model_output_dir=args.saved_model_dir)
 
     inference_on_images(model=model, category_index=category_index,
-                        test_csv_label=config_dict["test_csv_label"],
-                        images_dir=config_dict["images_dir"])
+                        test_csv_label=args.test_csv_label_path,
+                        images_dir=args.images_dir,
+                        output_dir=args.inference_output_directory)
+
+    print(
+        f"Inferenced images will be saved in {args.inference_output_directory}")
 
 
 if __name__ == "__main__":

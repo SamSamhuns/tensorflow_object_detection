@@ -120,8 +120,10 @@ Start training
 
 ```bash
 # default coco_person case YAML_CONFIG_FILE = model_store/mobilenet_v2_train.yaml
-$ python3 tf_odet/train/train.py -c YAML_CONFIG_FILE
+$ python3 -m tf_odet.train.train -c YAML_CONFIG_FILE
 ```
+
+Note: Change the `tf_odet/set_tf_env_vars.py` to alter GPUs being used and other tf2 related env vars.
 
 ## 5. Model Validation and Testing
 
@@ -131,7 +133,7 @@ Validation metrics based on [COCO detection evaluation metrics](https://cocodata
 
 ```bash
 # default coco_person case YAML_CONFIG_FILE = model_store/mobilenet_v2_train.yaml
-$ python3 tf_odet/test/test.py -c YAML_CONFIG_FILE
+$ python3 -m tf_odet.test.test -c YAML_CONFIG_FILE
 ```
 
 ### TensorBoard Visualization
@@ -147,13 +149,13 @@ $ tensorboard --logdir=TRAINING_DIR --port=HTTP_PORT
 # default coco_person case
 #   YAML_CONFIG_FILE = model_store/mobilenet_v2_train.yaml
 #   EXPORT_OUTPUT_DIR=inference_graph
-$ python3 tf_odet/export.py -c YAML_CONFIG_FILE -o EXPORT_OUTPUT_DIR
+$ python3 -m tf_odet.export -c YAML_CONFIG_FILE -o EXPORT_OUTPUT_DIR
 ```
 
 ## 7. Model Inference
 
 ```bash
-$ python3 tf_odet/inference/inference.py
+$ python3 -m tf_odet.inference.inference -c YAML_CONFIG_FILE -m SAVED_MODEL_DIR -o INFERENCE_OUT_DIR -tcsv TEST_CSV_LABEL_PATH -i IMAGES_DATA_DIR
 ```
 
 ### Acknowledgements
