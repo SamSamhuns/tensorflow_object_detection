@@ -154,5 +154,6 @@ training/
 inference_graph/
 *.record
 
-# detection results
+# drawn/detection results
 detection_result/
+drawn_images/

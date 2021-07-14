@@ -1,6 +1,7 @@
 # Object Detection with Tensorflow
 
-Important: Use a virtual env with **python 3.6**
+<img src="readme_imgs/000435.jpg" width="60%" />
+
 
 ## Contents
 
@@ -13,6 +14,8 @@ Important: Use a virtual env with **python 3.6**
 -  [7. Model Inference](#7-model-inference)
 
 ## 1. Repository Setup
+
+Important: Use a virtual env with **python 3.6**
 
 ```bash
 $ git clone https://github.com/tensorflow/models.git
