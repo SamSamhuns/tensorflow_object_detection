@@ -9,7 +9,7 @@ import xml.etree.ElementTree as ET
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='YOLO fmt to Pascal VOC conversion for object detection task')
+        description='Pascal VOC to tfrecord generation CSV fmt conversion for object detection training')
     parser.add_argument("-r",
                         "--root_voc",
                         default="VOCdevkit/VOC2007",

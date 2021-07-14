@@ -12,19 +12,21 @@ num_steps = 7500
 num_eval_steps = 1000
 
 # having the leading './' is important
-DATASET_ROOT_PATH = "./data/kangaroo"
-MSTORE_ROOT_PATH = "./model_store"
+DATASET_PATH = "./data/coco_person"
+MSTORE_PATH = "./model_store"
 model_dir = "./training"
 
-model_training_config_path = osp.join(MSTORE_ROOT_PATH, "mobilenet_v2_train.yaml")
-train_record_path = osp.join(DATASET_ROOT_PATH, "train.record")
-test_record_path = osp.join(DATASET_ROOT_PATH, "test.record")
-labelmap_path = osp.join(DATASET_ROOT_PATH, "labelmap.pbtxt")
+model_training_config_path = osp.join(MSTORE_PATH, "mobilenet_v2_train.yaml")
+train_record_path = osp.join(DATASET_PATH, "train.record")
+test_record_path = osp.join(DATASET_PATH, "test.record")
+labelmap_path = osp.join(DATASET_PATH, "labelmap.pbtxt")
 
-pipeline_config_path = osp.join(
-    MSTORE_ROOT_PATH, "mobilenet_v2.config")
-fine_tune_checkpoint = osp.join(
-    MSTORE_ROOT_PATH, "mobilenet_v2/mobilenet_v2.ckpt-1")
+pipeline_config_path = osp.join(MSTORE_PATH, "mobilenet_v2.config")
+fine_tune_checkpoint = osp.join(MSTORE_PATH, "mobilenet_v2/mobilenet_v2.ckpt-1")
+
+##############################################
+# End of param setting, Verifying params below
+##############################################
 
 param_dicts = {"train_record_path": train_record_path,
                "test_record_path": test_record_path,

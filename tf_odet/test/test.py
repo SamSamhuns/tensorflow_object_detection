@@ -16,6 +16,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "3"  # 0, 1, 2, 3, 4, 5, 6, 7
 # import tf after setting ENV vars
 import tensorflow as tf
 
+
 # limit gpu memory growth to required amount only
 gpus = tf.config.experimental.list_physical_devices('GPU')
 if gpus:
@@ -28,7 +29,7 @@ if gpus:
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Train model using tensorflow 2 object detection api')
+        description='Test model using tensorflow 2 object detection api')
     parser.add_argument("-c",
                         "--model_config_yaml",
                         default="model_store/mobilenet_v2_train.yaml",
@@ -37,31 +38,28 @@ def parse_args():
     return args
 
 
-def train(model_config_yaml):
-    # load config files for training
-    with open(model_config_yaml) as file:
+def test(model_config_yaml):
+    # load config files for testing
+    with open("model_store/mobilenet_v2_train.yaml") as file:
         config_dict = yaml.full_load(file)
 
-    # #####################################
-    # calling tf2 obj det training function
-    # #####################################
+    # #######################################
+    # calling tf2 obj det validation function
+    # #######################################
 
-    train_args = ["python3", "models/research/object_detection/model_main_tf2.py",
-                  "--pipeline_config_path", config_dict["pipeline_config_path"],
-                  "--model_dir", config_dict["model_dir"],
-                  "--alsologtostderr",
-                  "--num_train_steps", str(config_dict["num_steps"]),
-                  "--sample_1_of_n_eval_examples", "1",
-                  "--num_eval_steps", str(config_dict["num_eval_steps"])]
+    val_args = ["python3", "models/research/object_detection/model_main_tf2.py",
+                "--pipeline_config_path", config_dict["pipeline_config_path"],
+                "--model_dir", config_dict["model_dir"],
+                "--checkpoint_dir", config_dict["model_dir"]]
 
-    rtn_status = call(train_args)
-    print(f"Return status of training script call {rtn_status}")
+    rtn_status = call(val_args)
+    print(f"Return status of validation script call {rtn_status}")
     return rtn_status
 
 
 def main():
     args = parse_args()
-    train(args.model_config_yaml)
+    test(args.model_config_yaml)
 
 
 if __name__ == "__main__":
