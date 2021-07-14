@@ -143,3 +143,12 @@ logs/
 
 # checkpoints file
 checkpoints/
+
+# protobuf git repository
+protobuf
+
+# tf2 object detection git repository
+models
+
+# tf2 model checkpoint default directory
+training

@@ -1,21 +1,21 @@
 # Object Detection with Tensorflow
 
-Note: Using a virtual env with python 3.6
+Important: Use a virtual env with **python 3.6**
 
 ## 1. Repository Setup
 
 ```bash
 $ git clone https://github.com/tensorflow/models.git
 # set up a virtual env / conda env
-$ python -m venv venv_tf; source venv_tf/bin/activate
+$ python3 -m venv venv_tf; source venv_tf/bin/activate
 $ cd models/research/
 # install protoc in system with sudo bash install_protoc.sh and run the cmd
-$ protoc object_detection/protos/*.proto --python_out=.
+$ protoc object_detection/protos/*.proto --python3_out=.
 # install TensorFlow Object Detection API.
 $ cp object_detection/packages/tf2/setup.py .
-$ python -m pip install .
+$ python3 -m pip install .
 # run model builder test
-$ python object_detection/builders/model_builder_tf2_test.py
+$ python3 object_detection/builders/model_builder_tf2_test.py
 ```
 
 ## 2. Data Setup
@@ -46,8 +46,8 @@ Example on the `coco_person` dataset. This dataset was created using `tf_odet/da
 
 ```bash
 $ export dataset=coco_person
-$ python tf_odet/data/generate_tf_records.py -l $dataset/labelmap.pbtxt -o $dataset/train.record -i $dataset/images -csv $dataset/train_labels.csv
-$ python tf_odet/data/generate_tf_records.py -l $dataset/labelmap.pbtxt -o $dataset/test.record -i $dataset/images -csv $dataset/test_labels.csv
+$ python3 tf_odet/data/generate_tf_records.py -l $dataset/labelmap.pbtxt -o $dataset/train.record -i $dataset/images -csv $dataset/train_labels.csv
+$ python3 tf_odet/data/generate_tf_records.py -l $dataset/labelmap.pbtxt -o $dataset/test.record -i $dataset/images -csv $dataset/test_labels.csv
 ```
 
 ## 3. Model Setup
@@ -74,9 +74,69 @@ $ mv ssd_mobilenet_v2_320x320_coco17_tpu-8.config mobilenet_v2.config
 
 ## 4. Model Training
 
-## 5. Model Validation
+Edit training parameters in `tf_odet/train/generate_trainval_params.py`
+
+Sample parameter set for coco_person object detection training
+
+```python
+num_classes = 1
+batch_size = 32
+num_steps = 7500
+num_eval_steps = 1000
+
+# having the leading './' is important
+DATASET_PATH = "./data/coco_person"
+MSTORE_PATH = "./model_store"
+model_dir = "./training"
+
+model_training_config_path = osp.join(MSTORE_PATH, "mobilenet_v2_train.yaml")
+train_record_path = osp.join(DATASET_PATH, "train.record")
+test_record_path = osp.join(DATASET_PATH, "test.record")
+labelmap_path = osp.join(DATASET_PATH, "labelmap.pbtxt")
+
+pipeline_config_path = osp.join(MSTORE_PATH, "mobilenet_v2.config")
+fine_tune_checkpoint = osp.join(MSTORE_PATH, "mobilenet_v2/mobilenet_v2.ckpt-1")
+```
+
+Run the training param yaml config generator:
+
+```bash
+$ python3 tf_odet/generate_train_test_params.py
+```
+
+Start training
+
+```bash
+# default coco_person case YAML_CONFIG_FILE = model_store/mobilenet_v2_train.yaml
+$ python3 tf_odet/train/train.py -c YAML_CONFIG_FILE
+```
+
+## 5. Model Validation and Testing
+
+### Precision, Recall and Loss Calculation on Test split
+
+Validation metrics based on [COCO detection evaluation metrics](https://cocodataset.org/#detection-eval)
+
+```bash
+# default coco_person case YAML_CONFIG_FILE = model_store/mobilenet_v2_train.yaml
+$ python3 tf_odet/test/test.py -c YAML_CONFIG_FILE
+```
+
+### TensorBoard Visualization
+
+```bash
+# default coco_person case, TRAINING_DIR =`training` which contains the saved checkpoints
+$ tensorboard --logdir=TRAINING_DIR --port=HTTP_PORT
+```
 
 ## 6. Model Export
+
+```bash
+# default coco_person case
+#   YAML_CONFIG_FILE = model_store/mobilenet_v2_train.yaml
+#   EXPORT_OUTPUT_DIR=inference_graph
+$ python3 tf_odet/export.py -c YAML_CONFIG_FILE -o EXPORT_OUTPUT_DIR
+```
 
 ### Acknowledgements
 
