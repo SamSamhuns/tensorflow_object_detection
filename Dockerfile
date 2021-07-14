@@ -3,6 +3,10 @@ FROM tensorflow/tensorflow:latest-gpu
 ENV CUDA_DEVICE_ORDER='PCI_BUS_ID'
 ENV CUDA_VISIBLE_DEVICES='0'
 
+# install opencv reqs
+RUN apt-get update \
+ && apt-get install libsm6 libxext6 libgl1-mesa-glx ffmpeg -y
+
 WORKDIR /tf_odet_root
 
 # install protoc in linux
