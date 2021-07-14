@@ -4,13 +4,13 @@ Important: Use a virtual env with **python 3.6**
 
 ## Contents
 
--  [1. Repository Setup](1.-repository-setup)
--  [2. Data Setup](2.-data-setup)
--  [3. Model Setup](3.-model-setup)
--  [4. Model Training](4.-model-training)
--  [5. Mpdel Validation and Testing](5.-model-validation-and-testing)
--  [6. Model Export](6.-model-export)
--  [7. Model Inference](7.-model-inference)
+-  [1. Repository Setup](#1-repository-setup)
+-  [2. Data Setup](#2-data-setup)
+-  [3. Model Setup](#3-model-setup)
+-  [4. Model Training](#4-model-training)
+-  [5. Mpdel Validation and# Testing](5-model-validation-and-testing)
+-  [6. Model Export](#6-model-export)
+-  [7. Model Inference](#7-model-inference)
 
 ## 1. Repository Setup
 
