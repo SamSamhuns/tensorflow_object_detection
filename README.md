@@ -5,6 +5,7 @@
 
 ## Contents
 
+-  [0. Dockerfile](#0-dockerfile-use)
 -  [1. Repository Setup](#1-repository-setup)
 -  [2. Data Setup](#2-data-setup)
 -  [3. Model Setup](#3-model-setup)
@@ -12,6 +13,18 @@
 -  [5. Mpdel Validation and# Testing](5-model-validation-and-testing)
 -  [6. Model Export](#6-model-export)
 -  [7. Model Inference](#7-model-inference)
+
+## 0. Dockerfile Use
+
+`tf2 object detection api` Dockerfile acquired from `https://github.com/tensorflow/models/blob/master/research/object_detection/dockerfiles/tf2/Dockerfile`.
+
+```bash
+$ git clone https://github.com/tensorflow/models.git
+$ bash build_docker.sh
+$ bash run_docker.sh -h HTTP_TFBOARD_PORT
+```
+
+-   Setup `data` and `model_store` directory then run training commands from `step 4` as usual
 
 ## 1. Repository Setup
 
